@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Our Digital Scrapbook ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+
+<style>
+/* BACKGROUND THEME */
+body{
+  margin:0;
+  font-family:'Poppins',sans-serif;
+  color:#5a0c23;
+  background-color:#ffd6e5;
+  background-image:
+    radial-gradient(circle at 10px 10px, #b3003b 3px, transparent 4px),
+    radial-gradient(circle at 30px 30px, #b3003b 3px, transparent 4px);
+  background-size:40px 40px;
+}
+
+/* COMMON */
+.page{
+  display:none;
+  padding:20px;
+  padding-bottom:100px;
+}
+.active{display:block;}
+
+h2{
+  font-family:'Patrick Hand',cursive;
+  text-align:center;
+  color:#8b002f;
+}
+.center{text-align:center;}
+
+/* HOME */
+.polaroid{
+  background:#fff0f6;
+  padding:10px;
+  width:260px;
+  margin:20px auto;
+  box-shadow:0 10px 20px rgba(139,0,47,0.3);
+  border-radius:12px;
+}
+.polaroid img{
+  width:100%;
+  border-radius:10px;
+}
+.caption{
+  text-align:center;
+  font-family:'Patrick Hand',cursive;
+}
+
+/* PASSWORD */
+.lock-box{
+  background:#ffe0ec;
+  padding:20px;
+  max-width:300px;
+  margin:20px auto;
+  border-radius:15px;
+  box-shadow:0 6px 15px rgba(139,0,47,0.3);
+}
+.lock-box input{
+  width:100%;
+  padding:10px;
+  border-radius:8px;
+  border:1px solid #cc3366;
+}
+.lock-box button{
+  width:100%;
+  margin-top:10px;
+  padding:10px;
+  background:#b3003b;
+  color:white;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+/* MEMORIES */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+}
+
+/* FLIP CARD */
+.flip-card{
+  perspective:1000px;
+  cursor:pointer;
+}
+.flip-inner{
+  position:relative;
+  width:100%;
+  height:260px;
+  transition:transform 0.6s;
+  transform-style:preserve-3d;
+}
+/* REMOVED .flip-card.active .flip-inner rule */
+.flip-front,.flip-back{
+  position:absolute;
+  width:100%;
+  height:100%;
+  backface-visibility:hidden;
+  border-radius:15px;
+  box-shadow:0 6px 12px rgba(139,0,47,0.3);
+}
+.flip-front{
+  position:relative;
+  overflow:hidden;
+  border-radius:15px;
+}
+
+.flip-front::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image:var(--bg);
+  background-size:cover;
+  background-position:center;
+  filter:blur(18px) brightness(0.7);
+  transform:scale(1.2);
+}
+
+.flip-front img{
+  position:relative;
+  z-index:1;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  pointer-events:none;
+}
+.flip-back{
+  background:#ffb3cc;
+  transform:rotateY(180deg);
+  padding:15px;
+  font-family:'Patrick Hand',cursive;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+/* LETTER */
+.letter{
+  background:#ffe0ec;
+  padding:20px;
+  border-left:5px solid #b3003b;
+  font-family:'Patrick Hand',cursive;
+  line-height:1.6;
+  border-radius:10px;
+}
+
+/* COUPONS */
+.coupon{
+  background:#ffe0ec;
+  border:2px dashed #b3003b;
+  border-radius:15px;
+  padding:15px;
+  margin:15px 0;
+  cursor:pointer;
+}
+.coupon.redeemed{
+  opacity:0.5;
+  background:#f5c2d4;
+  text-decoration:line-through;
+  cursor:not-allowed;
+}
+
+/* NAV */
+nav{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  background:#ffb3cc;
+  display:flex;
+  justify-content:space-around;
+  padding:10px 0;
+  box-shadow:0 -3px 10px rgba(139,0,47,0.4);
+}
+nav button{
+  background:none;
+  border:none;
+  font-size:14px;
+  cursor:pointer;
+}
+nav.locked button{
+  opacity:0.4;
+  pointer-events:none;
+}
+
+/* FULLSCREEN OVERLAY */
+.note-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.4);
+  backdrop-filter:blur(10px);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+.note-box{
+  background:#ffe0ec;
+  max-width:90%;
+  padding:25px;
+  border-radius:20px;
+  font-family:'Patrick Hand',cursive;
+  font-size:20px;
+  text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,0.3);
+}
+.note-box button{
+  margin-top:15px;
+  padding:8px 20px;
+  border:none;
+  border-radius:20px;
+  background:#b3003b;
+  color:white;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Background Music -->
+<audio id="bgMusic" loop>
+  <source src="song.mp3" type="audio/mpeg">
+</audio>
+
+<!-- HOME -->
+<div class="page active" id="home">
+  <h2>Pepu & Buchan Bond ❤️</h2>
+
+  <div class="polaroid">
+    <img src="main.jpeg">
+    <div class="caption">You & Me 💕</div>
+  </div>
+
+  <div class="lock-box">
+    <p class="center">🔒 Enter Password</p>
+    <input type="password" id="password" placeholder="Enter password">
+    <p class="center"><small>Hint: Our Propose day (hint: DD/MM/YYYY) ❤️</small></p>
+    <button onclick="unlock()">Unlock 💖</button>
+  </div>
+</div>
+
+<!-- MEMORIES -->
+<div class="page" id="memories">
+  <h2>Our Memories 📸</h2>
+  <div class="grid">
+
+    <div class="flip-card" onclick="openNote('This moment started everything. Our first pic togther and Very special to us ❤️')">
+      <div class="flip-inner">
+        <div class="flip-front" style="--bg:url('m1.jpeg')"><img src="m1.jpeg"></div>
+        <div class="flip-back">This moment started everything ❤️</div>
+      </div>
+    </div>
+
+    <div class="flip-card" onclick="openNote('Your smile here is my favourite. Traditional Day Pic In Zero Degree ...One of the bestest moment 🥹')">
+      <div class="flip-inner">
+        <div class="flip-front" style="--bg:url('m2.jpeg')"><img src="m2.jpeg"></div>
+        <div class="flip-back">Your smile here is my favourite 🥹</div>
+      </div>
+    </div>
+
+    <div class="flip-card" onclick="openNote('Our bestest trip till date...Night in marine with you is like a dream for me 💖')">
+      <div class="flip-inner">
+        <div class="flip-front" style="--bg:url('m3.jpeg')"><img src="m3.jpeg"></div>
+        <div class="flip-back">Moments like this make life beautiful 💖</div>
+      </div>
+    </div>
+
+    <div class="flip-card" onclick="openNote('Forever grateful for you 🌹')">
+      <div class="flip-inner">
+        <div class="flip-front" style="--bg:url('m4.jpeg')"><img src="m4.jpeg"></div>
+        <div class="flip-back">Forever grateful for you 🌹</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- LETTER -->
+<div class="page" id="letter">
+  <h2>My Letter 💌</h2>
+  <div class="letter">
+    Dear Buchan,<br><br>
+    I dont know how to explain everything perfectly,<br>
+    but I know one thing for sure 
+    you are very special to me.
+    With you, even normal moments feel beautiful.<br> 
+    Your smile makes my day better,
+    and your presence makes everything feel calm and safe.<br>
+    Thank you for understanding me,
+    for standing by me,
+    and for being you  just the way you are.<br>
+    I may not be perfect,<br>
+    but my feelings for you are real and pure.
+    No matter what happens,<br>
+    you will always have a special place in my heart.<br>
+    This little website is just a small way
+    to show how much you mean to me ❤️ ❤️<br><br>
+    If you dont liked it sorry..But please dont make your mood off<br>
+    This is my little efforts for you.<br><br>
+    Love always,<br>
+    Pepuuu
+  </div>
+</div>
+
+<!-- COUPONS -->
+<div class="page" id="coupons">
+  <h2>Love Coupons 🎟️</h2>
+
+  <div class="coupon" onclick="redeem(this)">Once in a week Sagar Gaire</div>
+  <div class="coupon" onclick="redeem(this)">Banaras trip</div>
+  <div class="coupon" onclick="redeem(this)">Unlimited Snaps</div>
+  <div class="coupon" onclick="redeem(this)">Drive with music</div>
+  <div class="coupon" onclick="redeem(this)">No-Argument Pass 😌</div>
+</div>
+
+<div class="note-overlay" id="noteOverlay">
+  <div class="note-box">
+    <div id="noteText"></div>
+    <button onclick="closeNote()">Close 💖</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="nav" class="locked">
+  <button onclick="openPage('home')">🏠 Home</button>
+  <button onclick="openPage('memories')">📷 Memories</button>
+  <button onclick="openPage('letter')">💌 Letter</button>
+  <button onclick="openPage('coupons')">🎟️ Coupons</button>
+</nav>
+
+<script>
+const correctPassword="17/10/2023"; // CHANGE PASSWORD HERE
+let unlocked=false;
+
+function unlock(){
+  if(document.getElementById("password").value===correctPassword){
+    unlocked=true;
+    document.getElementById("nav").classList.remove("locked");
+    alert("Unlocked your surprise ❤️");
+
+    const music = document.getElementById("bgMusic");
+    music.volume = 0.2;
+    music.play();
+  }else{
+    alert("You forgotted ! try again 😔");
+  }
+}
+
+function openPage(id){
+  if(!unlocked && id!=="home"){
+    alert("Please unlock first 🔒");
+    return;
+  }
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function redeem(el){
+  if(el.classList.contains("redeemed")) return;
+  el.classList.add("redeemed");
+  el.innerText="Redeemed ❤️";
+}
+
+function openNote(text){
+  document.getElementById('noteText').innerText = text;
+  document.getElementById('noteOverlay').style.display = 'flex';
+}
+
+function closeNote(){
+  document.getElementById('noteOverlay').style.display = 'none';
+}
+</script>
+
+</body>
+</html>
